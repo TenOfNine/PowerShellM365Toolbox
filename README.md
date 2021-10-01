@@ -20,11 +20,21 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+
+<p align="center">
+    <a href="https://github.com/TenOfNine/PowerShellM365Toolbox/graphs/contributors" alt="Contributors">
+        <img src="https://img.shields.io/github/contributors/TenOfNine/PowerShellM365Toolbox?label=Contributors&style=flat-square" /></a>   
+    <a href="https://github.com/TenOfNine/PowerShellM365Toolbox/network/members" alt="Forks">
+        <img src="https://img.shields.io/github/forks/TenOfNine/PowerShellM365Toolbox?label=Forks&style=flat-square" /></a>
+    <a href="https://github.com/TenOfNine/PowerShellM365Toolbox/stargazers" alt="Stars">
+        <img src="https://img.shields.io/github/stars/TenOfNine/PowerShellM365Toolbox?label=Stars&style=flat-square" /></a>
+    <a href="https://github.com/TenOfNine/PowerShellM365Toolbox/pulse" alt="Activity">
+        <img src="https://img.shields.io/github/commit-activity/m/TenOfNine/PowerShellM365Toolbox?label=Activity&style=flat-square" /></a>
+    <a href="https://github.com/TenOfNine/PowerShellM365Toolbox/issues" alt="Issues">
+        <img src="https://img.shields.io/github/issues/TenOfNine/PowerShellM365Toolbox?label=Issues&style=flat-square" /></a>
+    <a href="https://github.com/TenOfNine/PowerShellM365Toolbox/blob/master/LICENSE.txt" alt="License">
+        <img src="https://img.shields.io/github/license/TenOfNine/PowerShellM365Toolbox?label=License&style=flat-square" /></a>
+</p>
 
 
 
