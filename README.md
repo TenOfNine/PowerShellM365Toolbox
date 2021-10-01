@@ -100,7 +100,7 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-If you haven't already installed the Powershell Cloud connectors, run the below, in the Powershell.
+If you haven't already installed the PowerShell Cloud connectors, run the below, in the PowerShell.
 * AzureAD
   ```sh
   Install-Module -Name AzureAD
@@ -109,7 +109,7 @@ If you haven't already installed the Powershell Cloud connectors, run the below,
 
 * Exchange Online
   ```sh
-  Install-Module PowershellGet
+  Install-Module -Name PowershellGet
   Install-Module -Name ExchangeOnlineManagement
   ```
 
