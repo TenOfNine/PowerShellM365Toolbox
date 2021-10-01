@@ -85,12 +85,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+This aims to be a simple UI that simplifies repetitive tasks, that usually need PowerShell-Scripts.
 
 
 ### Built With
 
-* [](Just me)
+* Just me
 
 
 
