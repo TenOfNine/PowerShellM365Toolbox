@@ -8,9 +8,9 @@
 .OUTPUTS
   	None
 .NOTES
-	Version:        0.1
+	Version:        0.1.1
 	Author:         TenOfNine
-	Creation Date:  30.09.2021
+	Creation Date:  01.10.2021
 .EXAMPLE
   	None provided
 #>
@@ -138,7 +138,7 @@ $Script:My.EXORoomlistsSearchBtn1 = $Script:My.Window.FindName('exoroomlistsSear
 $Script:My.EXORoomlistsSearchBtn2 = $Script:My.Window.FindName('exoroomlistsSearchbtn2')
 
 $Script:My.EXORoomlistsSearchTb1 = $Script:My.Window.FindName('exoroomlistsSearchtb1')
-$Script:My.EXORoomlistsSearchTb2 = $Script:My.Window.FindName('exoroomlistsSearchtb1')
+$Script:My.EXORoomlistsSearchTb2 = $Script:My.Window.FindName('exoroomlistsSearchtb2')
 
 
 
@@ -146,9 +146,15 @@ $Script:My.EXORoomlistsSearchTb2 = $Script:My.Window.FindName('exoroomlistsSearc
 
 $arraylistgroups = New-Object System.Collections.ArrayList 
 $arraylistrooms = New-Object System.Collections.ArrayList 
+$arraylistmembers = New-Object System.Collections.ArrayList 
 
 $Script:My.ConnectExchangebtn.Add_Click({
-#Connect-ExchangeOnline
+
+$getsessions = Get-PSSession | Select-Object -Property State, Name
+$isconnected = (@($getsessions) -like '@{State=Opened; Name=ExchangeOnlineInternalSession*').Count -gt 0
+If ($isconnected -ne "True") {
+Connect-ExchangeOnline
+}
 
 
 $Script:My.EXORoomlistsAddBtn.IsEnabled = $true
@@ -158,23 +164,16 @@ $Script:My.EXORoomlistsSearchTb2.IsEnabled = $true
 $Script:My.EXORoomlistsSearchBtn1.IsEnabled = $true
 $Script:My.EXORoomlistsSearchBtn2.IsEnabled = $true
 
-
-
-$global:groups = Get-DistributionGroup -RecipientTypeDetails RoomList  
-$global:rooms = Get-Mailbox -RecipientTypeDetails RoomMailbox | select -ExpandProperty DisplayName
-
-
-$global:groups = $global:groups | Sort-Object -Property "DisplayName"
-$global:rooms = $global:rooms | Sort-Object -Property "DisplayName"
-
-
-
 $Script:My.EXORoomlistView1.Items.Clear()
 $Script:My.EXORoomlistView2.Items.Clear()
 $Script:My.EXORoomlistView3.Items.Clear()
 
 $arraylistgroups.Clear();
 $arraylistrooms.Clear();
+$arraylistmembers.Clear();
+
+
+loadexoroomlistview
 
 $Script:My.ConnectExchangebtn.IsEnabled = $false
 $Script:My.CheckBox2.IsChecked = $true
@@ -182,8 +181,7 @@ $Script:My.CheckBox2.IsChecked = $true
 
 
 
-
-
+#----------------------EXO-Roomlists--------------------
 
 $Script:My.EXORoomlistsSearchBtn1.Add_Click({
 
@@ -203,24 +201,21 @@ $arraylistgroups.Add($_.Id)
     
 })
 
-
-
 $Script:My.EXORoomlistsSearchBtn2.Add_Click({
 
 
 $varEXORoomlistsSearchBtn2 = $Script:My.EXORoomlistsSearchTb2.Text.ToString()
 if($varEXORoomlistsSearchBtn2 -eq "Search"){$varEXORoomlistsSearchBtn2=""}
+
 $Script:My.EXORoomlistView3.Items.Clear()
 
 $arraylistrooms.Clear();
-$global:rooms | ForEach-Object {$Script:My.EXORoomlistView3.Items.Add($_) |Out-Null
+$global:rooms -match $varEXORoomlistsSearchBtn2 | ForEach-Object {$Script:My.EXORoomlistView3.Items.Add($_) |Out-Null
 $arraylistrooms.Add($_)
 
     }
    
 })
-
-#--------------------------------------------------------------
 
 $Script:My.EXORoomlistsAddBtn.Add_Click({
 
@@ -232,19 +227,30 @@ $index1 = $arraylistgroups[$selected]
 $selected = $Script:My.EXORoomlistView3.SelectedIndex
 $index2 = $arraylistrooms[$selected]
 
-Add-DistributionGroupMember -Id $index1 -Member $index2
+Add-DistributionGroupMember -Id $index1 -Member "$index2"
 
 
 })
-
 
 $Script:My.EXORoomlistsDelBtn.Add_Click({
 
 
+$selected = $Script:My.EXORoomlistView1.SelectedIndex
+$index1 = $arraylistgroups[$selected]
+
+
+$selected = $Script:My.EXORoomlistView2.SelectedIndex
+$index2 = $arraylistmembers[$selected]
+
+Remove-DistributionGroupMember -Id $index1 -Member "$index2"
+
+loadexoroomlistview
+
 })
 
+#----------------------EXO-Roomlists--------------------
 
-#--------------------------------------------------------------
+#--------------------EXO-Room-ListView------------------
 
 $Script:My.EXORoomlistView1.Add_SelectionChanged({
 
@@ -259,12 +265,49 @@ $index = $arraylistgroups[$selected]
 
 $members = Get-DistributionGroupMember -Id $index | select -ExpandProperty DisplayName | Sort-Object
 
+$arraylistmembers.Clear();
 
-$members  | ForEach-Object {$Script:My.EXORoomlistView2.Items.Add($_) |Out-Null}
+$members  | ForEach-Object {$Script:My.EXORoomlistView2.Items.Add($_) |Out-Null
+$arraylistmembers.Add($_)
 
+    }
 
 })
 
+#--------------------EXO-Room-ListView------------------
+
+#---------------------Functionblock---------------------
+function loadexoroomlistview(){
+
+$global:groups = Get-DistributionGroup -RecipientTypeDetails RoomList  
+$global:rooms = Get-Mailbox -RecipientTypeDetails RoomMailbox | select -ExpandProperty DisplayName
+
+
+$global:groups = $global:groups | Sort-Object -Property "DisplayName"
+$global:rooms = $global:rooms | Sort-Object -Property "DisplayName"
+
+$Script:My.EXORoomlistView1.Items.Clear()
+
+$arraylistgroups.Clear();
+$global:groups | Select-Object DisplayName, Id | ForEach-Object {$Script:My.EXORoomlistView1.Items.Add($_.DisplayName) |Out-Null
+$arraylistgroups.Add($_.Id)
+
+    }
+
+$Script:My.EXORoomlistView3.Items.Clear()
+
+$arraylistrooms.Clear();
+$global:rooms | ForEach-Object {$Script:My.EXORoomlistView3.Items.Add($_) |Out-Null
+$arraylistrooms.Add($_)
+
+    }
+
+
+}
+
+#---------------------Functionblock---------------------
+
+#-------------------Clean-up-garbage--------------------
 
 $Script:My.Window.Topmost = $true
 $Script:My.Window.ShowDialog() | Out-Null
@@ -274,3 +317,4 @@ Remove-Variable -Name 'My' -Force
 Set-StrictMode -Off
 $ErrorActionPreference = $ErrorActionPreferenceBackup
 Remove-Module -Name 'Microsoft.PowerShell.Management', 'Microsoft.PowerShell.Utility' -Force
+#-------------------Clean-up-garbage--------------------
