@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-	Handy tool for stuff that usually requires PS, but im to lazy to use
+	Handy tool for stuff that usually requires PS, but I’m to lazy to use
 .DESCRIPTION
-    	Handy tool for stuff that usually requires PS, but im to lazy to use
+    	Handy tool for stuff that usually requires PS, but I’m to lazy to use
 .INPUTS
     	GUI
 .OUTPUTS
