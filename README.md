@@ -88,7 +88,8 @@ This aims to be a simple UI that simplifies repetitive tasks, that usually need 
 
 ### Built With
 
-* Just me
+* TenOfNine
+* Codeplay8
 
 
 
@@ -156,8 +157,7 @@ Project Link: [https://github.com/TenOfNine/PowerShellM365Toolbox](https://githu
 ## Acknowledgements
 
 * []()
-* []()
-* []()
+
 
 
 
