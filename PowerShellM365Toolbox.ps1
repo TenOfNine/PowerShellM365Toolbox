@@ -43,7 +43,7 @@ $Script:My.WindowXaml = @'
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PowerShellM365Toolbox"
         mc:Ignorable="d"
-        Title="PowerShell M365 Toolbox" Height="470" Width="820" ResizeMode="NoResize" SizeToContent="Manual">
+        Title="PowerShell M365 Toolbox" Height="490" Width="820" ResizeMode="NoResize" SizeToContent="Manual">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="17*"/>
@@ -60,7 +60,7 @@ $Script:My.WindowXaml = @'
                         </StackPanel>
                     </GroupBox>
                     <GroupBox HorizontalAlignment="Left" Height="200" Header="About" Margin="587,10,0,0" VerticalAlignment="Top" Width="197">
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="PowerShell M365 Toolbox v0.1 03.09.2021&#10;&#13;https://github.com/TenOfNine/PowerShellM365Toolbox" Width="187"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="PowerShell M365 Toolbox v0.1.1 01.10.2021&#10;&#13;https://github.com/TenOfNine/PowerShellM365Toolbox" Width="187"/>
                     </GroupBox>
                     <GroupBox HorizontalAlignment="Left" Height="194" Header="Required Modules" Margin="307,19,0,0" VerticalAlignment="Top" Width="260">
                         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Install-Module Azure-AD" Width="250"/>
