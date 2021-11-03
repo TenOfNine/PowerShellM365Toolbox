@@ -1,16 +1,16 @@
 <#
 .SYNOPSIS
-	Handy tool for stuff that usually requires PS, but I’m to lazy to use
+	Handy tool for stuff that usually requires PS, but I'm to lazy to use
 .DESCRIPTION
-    	Handy tool for stuff that usually requires PS, but I’m to lazy to use
+    	Handy tool for stuff that usually requires PS, but I'm to lazy to use
 .INPUTS
     	GUI
 .OUTPUTS
   	None
 .NOTES
-	Version:        0.1.1
+	Version:        0.1.2
 	Author:         TenOfNine
-	Creation Date:  01.10.2021
+	Creation Date:  03.11.2021
 .EXAMPLE
   	None provided
 #>
@@ -43,7 +43,8 @@ $Script:My.WindowXaml = @'
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PowerShellM365Toolbox"
         mc:Ignorable="d"
-        Title="PowerShell M365 Toolbox" Height="490" Width="820" ResizeMode="NoResize" SizeToContent="Manual">
+        Title="PowerShell M365 Toolbox" Height="480" Width="820
+        " ResizeMode="NoResize" SizeToContent="Manual">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="17*"/>
@@ -60,10 +61,10 @@ $Script:My.WindowXaml = @'
                         </StackPanel>
                     </GroupBox>
                     <GroupBox HorizontalAlignment="Left" Height="200" Header="About" Margin="587,10,0,0" VerticalAlignment="Top" Width="197">
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="PowerShell M365 Toolbox v0.1.1 01.10.2021&#10;&#13;https://github.com/TenOfNine/PowerShellM365Toolbox" Width="187"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="PowerShell M365 Toolbox v0.1.2 03.11.2021&#10;&#13;https://github.com/TenOfNine/PowerShellM365Toolbox" Width="187"/>
                     </GroupBox>
                     <GroupBox HorizontalAlignment="Left" Height="194" Header="Required Modules" Margin="307,19,0,0" VerticalAlignment="Top" Width="260">
-                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Install-Module Azure-AD" Width="250"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Install-Module Azure-AD&#10;&#13;Install-Module ExchangeOnlineManagement" Width="250"/>
                     </GroupBox>
                 </Grid>
             </TabItem>
@@ -71,8 +72,28 @@ $Script:My.WindowXaml = @'
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="27*"/>
-                        <ColumnDefinition Width="767*"/>
+                        <ColumnDefinition Width="115*"/>
+                        <ColumnDefinition Width="652*"/>
                     </Grid.ColumnDefinitions>
+                    <TabControl Grid.ColumnSpan="3">
+                        <TabItem Header="Start">
+                            <Grid Background="#FFE5E5E5">
+                                <Button x:Name="azstartbtnconnectaz" Content="Connect to Azure" HorizontalAlignment="Left" Height="30" Margin="14,19,0,0" VerticalAlignment="Top" Width="175"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Groups">
+                            <Grid Background="#FFE5E5E5">
+                                <Label Content="Cloud-Groups a user is member/owner of" HorizontalAlignment="Left" Height="24" Margin="8,10,0,0" VerticalAlignment="Top" Width="240"/>
+                                <TextBox x:Name="azgroupsofUserSearchtb1" HorizontalAlignment="Left" Height="20" Margin="10,39,0,0" TextWrapping="Wrap" Text="Enter UPN" VerticalAlignment="Top" Width="181" IsEnabled="False"/>
+                                <Button x:Name="azgroupsofUserSearchbtn1" Content="Search" HorizontalAlignment="Left" Height="20" Margin="200,39,0,0" VerticalAlignment="Top" Width="180" IsEnabled="False"/>
+                                <Button x:Name="azgroupsofUserCopyMemberbtn1" Content="Copy Member-Groups to Clip" HorizontalAlignment="Left" Height="20" Margin="11,69,0,0" VerticalAlignment="Top" Width="180" IsEnabled="False"/>
+                                <Button x:Name="azgroupsofUserCopyOwnerbtn1" Content="Copy Owner-Groups to Clip" HorizontalAlignment="Left" Height="20" Margin="200,69,0,0" VerticalAlignment="Top" Width="180" IsEnabled="False"/>
+                                <ListBox x:Name="azgroupsofUserlb1" HorizontalAlignment="Left" Height="285" Margin="11,94,0,0" VerticalAlignment="Top" Width="180" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+                                <ListBox x:Name="azgroupsofUserlb2" Grid.Column="1" HorizontalAlignment="Left" Height="285" Margin="200,94,0,0" VerticalAlignment="Top" Width="180" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </TabItem>
             <TabItem Header="EXO" Height="20">
@@ -107,7 +128,6 @@ $Script:My.WindowXaml = @'
                 </Grid>
             </TabItem>
         </TabControl>
-
     </Grid>
 </Window>
 
@@ -125,6 +145,24 @@ $Script:My.CheckBox1 = $Script:My.Window.FindName('OverviewCBAzure')
 $Script:My.CheckBox2 = $Script:My.Window.FindName('OverviewCBEXO')
 $Script:My.CheckBox3 = $Script:My.Window.FindName('OverviewCBTeams')
 
+#---------------------Azure-Declarations-------------------
+
+$Script:My.ConnectAzurebtn = $Script:My.Window.FindName('azstartbtnconnectaz')
+
+
+$Script:My.AzGroupsOfMemberSearchTb1 = $Script:My.Window.FindName('azgroupsofUserSearchtb1')
+
+$Script:My.AzGroupsOfMemberSearchBtn1 = $Script:My.Window.FindName('azgroupsofUserSearchbtn1')
+$Script:My.AzGroupsOfMemberCopyMemberBtn1 = $Script:My.Window.FindName('azgroupsofUserCopyMemberbtn1')
+$Script:My.AzGroupsOfMemberCopyOwnerBtn1 = $Script:My.Window.FindName('azgroupsofUserCopyOwnerbtn1')
+
+$Script:My.AzGroupsOfMemberlistView1 = $Script:My.Window.FindName('azgroupsofUserlb1')
+$Script:My.AzGroupsOfMemberlistView2 = $Script:My.Window.FindName('azgroupsofUserlb2')
+
+#---------------------Azure-Declarations-------------------
+
+#----------------------EXO-Declarations--------------------
+
 $Script:My.ConnectExchangebtn = $Script:My.Window.FindName('exostartbtnconnectexo')
 
 $Script:My.EXORoomlistView1 = $Script:My.Window.FindName('exoroomlistslb1')
@@ -140,13 +178,37 @@ $Script:My.EXORoomlistsSearchBtn2 = $Script:My.Window.FindName('exoroomlistsSear
 $Script:My.EXORoomlistsSearchTb1 = $Script:My.Window.FindName('exoroomlistsSearchtb1')
 $Script:My.EXORoomlistsSearchTb2 = $Script:My.Window.FindName('exoroomlistsSearchtb2')
 
-
+#----------------------EXO-Declarations--------------------
 
 
 
 $arraylistgroups = New-Object System.Collections.ArrayList 
 $arraylistrooms = New-Object System.Collections.ArrayList 
 $arraylistmembers = New-Object System.Collections.ArrayList 
+
+$AzGroupsOfMemberSearch = New-Object System.Collections.ArrayList 
+
+
+#----------------------Connect-Buttons--------------------
+
+
+
+$Script:My.ConnectAzurebtn.Add_Click({
+
+try {$var = Get-AzureADTenantDetail}catch [Microsoft.Open.Azure.AD.CommonLibrary.AadNeedAuthenticationException]{Connect-AzureAD}
+
+
+$Script:My.AzGroupsOfMemberSearchTb1.IsEnabled = $true
+$Script:My.AzGroupsOfMemberSearchBtn1.IsEnabled = $true
+
+
+$Script:My.AzGroupsOfMemberlistView1.Items.Clear()
+$Script:My.AzGroupsOfMemberlistView2.Items.Clear()
+
+
+$Script:My.ConnectAzurebtn.IsEnabled = $false
+$Script:My.CheckBox1.IsChecked = $true
+})
 
 $Script:My.ConnectExchangebtn.Add_Click({
 
@@ -180,6 +242,38 @@ $Script:My.CheckBox2.IsChecked = $true
 })
 
 
+#----------------------Connect-Buttons--------------------
+
+#--------------Azure-GroupsOfMember-or-Owner--------------
+
+
+$Script:My.AzGroupsOfMemberSearchBtn1.Add_Click({
+$varAzGroupsOfMemberUPN = $Script:My.AzGroupsOfMemberSearchTb1.Text.ToString()
+
+$Script:My.AzGroupsOfMemberlistView1.Items.Clear()
+$Script:My.AzGroupsOfMemberlistView2.Items.Clear()
+
+Get-AzureADUser -SearchString $varAzGroupsOfMemberUPN | Get-AzureADUserMembership | ? {$_.ObjectType -ne "Role"} | ? {$_.DirSyncEnabled -like ""} | % {Get-AzureADGroup -ObjectId $_.ObjectId | select DisplayName} | Sort-Object -Property DisplayName | ForEach-Object {$Script:My.AzGroupsOfMemberlistView1.Items.Add($_.DisplayName) |Out-Null}
+Get-AzureADUser -SearchString $varAzGroupsOfMemberUPN | Get-AzureADUserOwnedObject | ? {$_.ObjectType -ne "Role"} | ? {$_.DirSyncEnabled -like ""} | % {Get-AzureADGroup -ObjectId $_.ObjectId | select DisplayName} | Sort-Object -Property DisplayName | ForEach-Object {$Script:My.AzGroupsOfMemberlistView2.Items.Add($_.DisplayName) |Out-Null}
+   
+$Script:My.AzGroupsOfMemberCopyMemberBtn1.IsEnabled = $true
+$Script:My.AzGroupsOfMemberCopyOwnerBtn1.IsEnabled = $true
+})
+
+
+
+$Script:My.AzGroupsOfMemberCopyMemberBtn1.Add_Click({
+$varAzGroupsOfMemberUPN = $Script:My.AzGroupsOfMemberSearchTb1.Text.ToString()
+Get-AzureADUser -SearchString $varAzGroupsOfMemberUPN | Get-AzureADUserMembership | ? {$_.ObjectType -ne "Role"} | ? {$_.DirSyncEnabled -like ""} | % {Get-AzureADGroup -ObjectId $_.ObjectId | select DisplayName} | Sort-Object -Property DisplayName | Select -ExpandProperty DisplayName | Set-Clipboard
+})
+
+$Script:My.AzGroupsOfMemberCopyOwnerBtn1.Add_Click({
+$varAzGroupsOfMemberUPN = $Script:My.AzGroupsOfMemberSearchTb1.Text.ToString()
+Get-AzureADUser -SearchString $varAzGroupsOfMemberUPN | Get-AzureADUserOwnedObject | ? {$_.ObjectType -ne "Role"} | ? {$_.DirSyncEnabled -like ""} | % {Get-AzureADGroup -ObjectId $_.ObjectId | select DisplayName} | Sort-Object -Property DisplayName | Select -ExpandProperty DisplayName | Set-Clipboard  
+})
+
+
+#--------------Azure-GroupsOfMember-or-Owner--------------
 
 #----------------------EXO-Roomlists--------------------
 
